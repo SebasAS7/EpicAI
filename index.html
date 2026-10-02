@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.3.0/dist/purify.min.js"></script>
+    <title>EpicAI</title>
+<style>
+    body {
+        text-align: center;
+        
+        font-family: Arial, sans-serif;
+    }
+    
+    img { 
+      width: 200px;
+    }
+
+    #message {
+        width: 500px;
+        height: 35px;
+        font-size: 16px;
+    }
+
+    button {
+        height: 40px;
+        font-size: 16px;
+    }
+
+    #response {
+        width: 600px;
+        margin: 20px auto;
+    }
+
+    .user-message {
+       text-align: right;
+       margin: 10px;
+    }
+
+    .ai-message {
+       text-align: left;
+       margin: 10px;
+    }
+</style>
+</head>
+
+<body>
+    <img id="logo" src="logo.png" alt="EpicAI">
+
+    <input id="message" placeholder="Escribe algo...">
+    <button onclick="sendMessage()">Enviar</button>
+
+    <p id="response"></p>
+
+    <script>
+       async function sendMessage() {
+    const message = document.getElementById("message").value;
+    const responseBox = document.getElementById("response");
+
+    if (!message.trim()) {
+        return;
+    }
+
+    // Mostrar mensaje del usuario
+    responseBox.innerHTML += `<p class="user-message"><b>Tú:</b> ${message}</p>`;
+
+    // Mostrar "Pensando..."
+    const thinking = document.createElement("p");
+    thinking.textContent = "EpicAI: Pensando...";
+    responseBox.appendChild(thinking);
+
+    try {
+        const response = await fetch("/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message })
+        });
+
+        const data = await response.json();
+
+        // Quitar "Pensando..."
+        thinking.remove();
+
+        if (data.reply) {
+    const aiMessage = document.createElement("div");
+    aiMessage.className = "ai-message";
+
+    aiMessage.innerHTML =
+        "<b>EpicAI:</b> " +
+        DOMPurify.sanitize(marked.parse(data.reply));
+
+    responseBox.appendChild(aiMessage);
+       } else {
+            responseBox.innerHTML += "<p>❌ " + data.error + "</p>";
+        }
+
+    } catch (error) {
+        thinking.remove();
+
+        responseBox.innerHTML +=
+            "<p>❌ No se pudo conectar con EpicAI.</p>";
+
+        console.error(error);
+    }
+}
+    </script>
+</body>
+</html>
