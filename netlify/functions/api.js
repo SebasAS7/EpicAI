@@ -12,7 +12,7 @@ const groq = new Groq({
 
 let conversation = [];
 
-app.post("/", async (req, res) => {
+app.post(["/", "/chat", "/.netlify/functions/api"], async (req, res) => {
     try {
         const response = await groq.chat.completions.create({
             messages: [
