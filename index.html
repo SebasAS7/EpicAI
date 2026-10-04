@@ -6,7 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.3.0/dist/purify.min.js"></script>
     <link rel="icon" type="image/ico" href="favicon.ico">
-    <title>EpicAI</title>
+    <title>Birdity</title>
 <style>
     body {
         text-align: center;
@@ -47,7 +47,7 @@
 </head>
 
 <body>
-    <img id="logo" src="logo.png" alt="EpicAI">
+    <img id="logo" src="logo.png" alt="Birdity">
 
     <input id="message" placeholder="Escribe algo...">
     <button onclick="sendMessage()">Enviar</button>
@@ -71,7 +71,7 @@
 
     // Mostrar "Pensando..."
     const thinking = document.createElement("p");
-    thinking.textContent = "EpicAI: Pensando...";
+    thinking.textContent = "Birdity: Pensando...";
     responseBox.appendChild(thinking);
 
     try {
@@ -93,7 +93,7 @@
     aiMessage.className = "ai-message";
 
     aiMessage.innerHTML =
-        "<b>EpicAI:</b> " +
+        "<b>Birdity:</b> " +
         DOMPurify.sanitize(marked.parse(data.reply));
 
     responseBox.appendChild(aiMessage);
@@ -105,7 +105,7 @@
         thinking.remove();
 
         responseBox.innerHTML +=
-            "<p>❌ No se pudo conectar con EpicAI.</p>";
+            "<p>❌ No se pudo conectar con Birdity.</p>";
 
         console.error(error);
     }
