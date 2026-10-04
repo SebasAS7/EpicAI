@@ -56,12 +56,15 @@
 
     <script>
        async function sendMessage() {
-    const message = document.getElementById("message").value;
+    const messageInput = document.getElementById("message");
+    const message = messageInput.value;
     const responseBox = document.getElementById("response");
 
     if (!message.trim()) {
         return;
     }
+
+    messageInput.value = "";
 
     // Mostrar mensaje del usuario
     responseBox.innerHTML += `<p class="user-message"><b>Tú:</b> ${message}</p>`;
